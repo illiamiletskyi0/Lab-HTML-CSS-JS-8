@@ -28,5 +28,24 @@
  * @returns {Show}
  */
 export function normalizeShow(raw) {
-  throw new Error('Not implemented');
+  let year = null;
+  if (typeof raw.premiered === 'string' && raw.premiered.length >= 4) {
+    const parsed = Number.parseInt(raw.premiered.slice(0, 4), 10);
+    year = Number.isNaN(parsed) ? null : parsed;
+  }
+
+  const rating = raw.rating?.average ?? null;
+  const runtime = raw.runtime ?? null;
+  const network = raw.network?.name ?? null;
+  const genres = Array.isArray(raw.genres) ? [...raw.genres] : [];
+
+  return {
+    id: raw.id,
+    name: raw.name,
+    year,
+    rating,
+    runtime,
+    network,
+    genres,
+  };
 }
